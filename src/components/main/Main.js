@@ -8,7 +8,7 @@ import EditAvatarPopup from "./EditAvatarPopup.js";
 import AddPlacePopup from "./AddPlacePopup.js";
 import Header from "../Header";
 import { CurrentUserContext } from "../../context/CurrentUserContext.js";
-import api from "../../utils/api.js";
+import mainApi from "../../utils/аpi.js";
 function Main(props) {
   const [currentUser, setCurrentUser] = React.useState({});
   const [isEditProfilePopupOpen, setProfilePopupOpen] = React.useState(false);
@@ -18,7 +18,7 @@ function Main(props) {
   const [cards, setCards] = React.useState([]);
   console.log(props.email);
   React.useEffect(() => {
-    Promise.all([api.getInitialCards(), api.getName()]).then(
+    Promise.all([mainApi.getInitialCards(), mainApi.getName()]).then(
       ([cards, userInfo]) => {
         setCards(cards);
         setCurrentUser({
@@ -34,9 +34,9 @@ function Main(props) {
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser.id);
     if (!isLiked) {
-      api.likeCard(card._id).then((newCard) => setNewLikesCallback(newCard));
+      mainApi.likeCard(card._id).then((newCard) => setNewLikesCallback(newCard));
     } else {
-      api.dislikeCard(card._id).then((newCard) => setNewLikesCallback(newCard));
+      mainApi.dislikeCard(card._id).then((newCard) => setNewLikesCallback(newCard));
     }
     const setNewLikesCallback = (newCard) => {
       const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
@@ -44,7 +44,7 @@ function Main(props) {
     };
   }
   function handleCardDelete(card) {
-    api.deleteCard(card._id).then((res) => {
+    mainApi.deleteCard(card._id).then((res) => {
       const newCards = cards.filter((c) => {
         return card._id !== c._id;
       });
@@ -73,7 +73,7 @@ function Main(props) {
     setSelectedCard({});
   }
   function handleUpdateUser(data) {
-    api.patchName(data).then((res) => {
+    mainApi.patchName(data).then((res) => {
       setCurrentUser({
         name: res.name,
         about: res.about,
@@ -84,7 +84,7 @@ function Main(props) {
     });
   }
   function handleUpdateAvatar(data) {
-    api.patchAvatar(data).then((res) => {
+    mainApi.patchAvatar(data).then((res) => {
       setCurrentUser({
         name: res.name,
         about: res.about,
@@ -95,7 +95,7 @@ function Main(props) {
     });
   }
   function handleAddPlaceSubmit(data) {
-    api.postCard(data).then((res) => {
+    mainApi.postCard(data).then((res) => {
       setCards([res, ...cards]);
       closeAllPopups();
     });
