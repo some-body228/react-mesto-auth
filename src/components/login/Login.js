@@ -1,11 +1,14 @@
 import React from "react";
 function Login(props) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState({
+      value: ""
+  });
+  const [password, setPassword] = React.useState({
+      value: ""
+  });
   function onSubmit(evt) {
     evt.preventDefault();
-    console.log({ email, password });
-    props.onLogin({ email, password });
+    props.onLogin({ email: email.value, password: password.value });
   }
   return (
     <section className="sing">
@@ -17,7 +20,7 @@ function Login(props) {
           required
           placeholder="Email"
           onChange={(evt) => {
-            setEmail(evt.target.value);
+            setEmail({value: evt.target.value});
           }}
         ></input>
         <input
@@ -28,7 +31,7 @@ function Login(props) {
           maxLength="30"
           placeholder="Пароль"
           onChange={(evt) => {
-            setPassword(evt.target.value);
+            setPassword({value: evt.target.value});
           }}
         ></input>
         <button className="sing__button" type="submit">

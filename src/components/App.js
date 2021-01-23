@@ -6,7 +6,7 @@ import ProtectedRoute from "./ProtectRoute";
 import Login from "./login/Login";
 import Register from "./register/Register";
 import InfoTooltip from "./InfoTooltip";
-import Api from "../utils/Api";
+import auth from "../utils/auth";
 function App(props) {
   const history = useHistory();
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -17,20 +17,22 @@ function App(props) {
   const [email, setEmail] = React.useState("");
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-    Api.authApi
+    if(jwt){
+      auth
       .checkToken(jwt)
       .then((res) => {
         setLoggedIn(true);
-        setEmail(res.data.email);
+        setEmail(res.email);
         history.push("/");
       })
       .catch((err) => {
         console.log(err.message);
       });
+    }
   }, []);
 
   function onRegistor(data) {
-    Api.authApi
+    auth
       .register(data)
       .then((res) => {
         setInfoPopup({
@@ -48,12 +50,12 @@ function App(props) {
       });
   }
   function onLogin(data) {
-    Api.authApi
+    auth
       .login(data)
       .then((res) => {
         localStorage.setItem("jwt", res.token);
         setLoggedIn(true);
-        setEmail(res.email);
+        setEmail(data.email);
         history.push("/");
       })
       .catch((err) => {
@@ -68,7 +70,7 @@ function App(props) {
     setLoggedIn(false);
     localStorage.removeItem("jwt");
   }
-  function closePopup() {
+  function closeInfoTooltip() {
     setInfoPopup({
       openPopup: false,
       failed: infoPopup.failed,
@@ -81,39 +83,35 @@ function App(props) {
           exact
           path="/"
           component={Main}
-          Header={Header}
           loggedIn={loggedIn}
           email={email}
           onLogOut={logOut}
         />
         <Route exact path="/sign-in">
-          <Header
-            renderedElement={
+        <Header>
               <a className="header__caption" href="/sign-up">
                 Регистрация
               </a>
-            }
-          />
+          </Header>
           <Login onLogin={onLogin} />
           <InfoTooltip
             isOpen={infoPopup.openPopup}
             failed={infoPopup.failed}
-            onClose={closePopup}
+            onClose={closeInfoTooltip}
           />
         </Route>
         <Route exact path="/sign-up">
-          <Header
-            renderedElement={
+          <Header>
               <a className="header__caption" href="/sign-in">
                 Войти
               </a>
-            }
-          />
+          </Header>
+            
           <Register onRegistor={onRegistor} />
           <InfoTooltip
             isOpen={infoPopup.openPopup}
             failed={infoPopup.failed}
-            onClose={closePopup}
+            onClose={closeInfoTooltip}
           />
         </Route>
       </Switch>

@@ -15,6 +15,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       name: place,
       link,
     });
+    evt.target.reset()
   }
   return (
     <PopupWithForm
@@ -23,9 +24,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       btnText="Создать"
       onSubmit={handleSubmit}
       isOpen={isOpen}
-      onClose={onClose}
-      children={
-        <>
+      onClose={onClose}>
           <input
             className="popup__input"
             id="place"
@@ -48,9 +47,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
             onChange={onLinkChange}
           />
           <span className="popup__error" id="link-error"></span>
-        </>
-      }
-    />
+    </PopupWithForm>
   );
 }
 export default AddPlacePopup;

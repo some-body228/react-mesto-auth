@@ -6,9 +6,9 @@ import PopupWithForm from "./PopupWithForm.js";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
 import AddPlacePopup from "./AddPlacePopup.js";
+import Header from "../Header";
 import { CurrentUserContext } from "../../context/CurrentUserContext.js";
-import Api from "../../utils/Api.js";
-const api = Api.api;
+import api from "../../utils/api.js";
 function Main(props) {
   const [currentUser, setCurrentUser] = React.useState({});
   const [isEditProfilePopupOpen, setProfilePopupOpen] = React.useState(false);
@@ -28,7 +28,8 @@ function Main(props) {
           id: userInfo._id,
         });
       }
-    );
+    )
+    .catch(err=>{console.log(err.message)})
   }, []);
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser.id);
@@ -101,9 +102,7 @@ function Main(props) {
   }
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <props.Header
-        renderedElement={
-          <>
+      <Header>
             <p className="header__caption header__caption_type_email">
               {props.email}
             </p>
@@ -114,9 +113,7 @@ function Main(props) {
             >
               Выйти
             </a>
-          </>
-        }
-      />
+      </Header>
       <CardsContainer
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}

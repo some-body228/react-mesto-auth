@@ -1,4 +1,3 @@
-import Login from "../components/login/Login";
 
 class Api {
   constructor(options) {
@@ -108,4 +107,4 @@ const authApi = new Api({
     "Content-Type": "application/json",
   },
 });
-export default { api, authApi };
+export default api
