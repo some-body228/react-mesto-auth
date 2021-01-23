@@ -101,10 +101,4 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
-const authApi = new Api({
-  baseUrl: "https://auth.nomoreparties.co",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 export default api

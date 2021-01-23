@@ -19,6 +19,7 @@ function Login(props) {
           type="email"
           required
           placeholder="Email"
+          value={email.value}
           onChange={(evt) => {
             setEmail({value: evt.target.value});
           }}
@@ -30,6 +31,7 @@ function Login(props) {
           minLength="8"
           maxLength="30"
           placeholder="Пароль"
+          value={password.value}
           onChange={(evt) => {
             setPassword({value: evt.target.value});
           }}
